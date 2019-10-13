@@ -2,7 +2,7 @@ package ng.dominic.parser.model;
 
 import java.math.BigDecimal;
 
-public class Transaction {
+public class Record {
 
     private int reference;
     private String accountNumber;
@@ -11,8 +11,8 @@ public class Transaction {
     private BigDecimal mutation;
     private BigDecimal endBalance;
 
-    public Transaction(int reference, String accountNumber, String description, BigDecimal startBalance,
-                       BigDecimal mutation, BigDecimal endBalance) {
+    public Record(int reference, String accountNumber, String description, BigDecimal startBalance,
+                  BigDecimal mutation, BigDecimal endBalance) {
         this.reference = reference;
         this.accountNumber = accountNumber;
         this.description = description;

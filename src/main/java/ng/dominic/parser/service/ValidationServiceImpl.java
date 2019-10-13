@@ -1,6 +1,6 @@
 package ng.dominic.parser.service;
 
-import ng.dominic.parser.model.Transaction;
+import ng.dominic.parser.model.Record;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,55 +14,55 @@ import java.util.stream.Collectors;
 public class ValidationServiceImpl implements ValidationService {
 
     @Override
-    public boolean isValidated(List<Transaction> rejectedTransactions) {
-        return rejectedTransactions.isEmpty();
+    public boolean isValidated(List<Record> rejectedRecords) {
+        return rejectedRecords.isEmpty();
     }
 
     @Override
-    public String reportValidationFailures(List<Transaction> transactions) {
-        return transactions.stream()
-                .map(transaction -> "Failed record with reference: "
-                        + transaction.getReference()
+    public String reportValidationFailures(List<Record> records) {
+        return records.stream()
+                .map(record -> "Failed record with reference: "
+                        + record.getReference()
                         + " and description: "
-                        + transaction.getDescription())
+                        + record.getDescription())
                 .collect(Collectors.joining("\n"));
     }
 
     @Override
-    public List<Transaction> validateAll(List<Transaction> transactions) {
-        List<Transaction> rejectedTransactions = new ArrayList<>();
-        rejectedTransactions.addAll(validateReferenceCode(transactions));
-        rejectedTransactions.addAll(validateEndBalance(transactions));
-        return rejectedTransactions;
+    public List<Record> validateAll(List<Record> records) {
+        List<Record> rejectedRecords = new ArrayList<>();
+        rejectedRecords.addAll(validateReferenceCode(records));
+        rejectedRecords.addAll(validateEndBalance(records));
+        return rejectedRecords;
     }
 
     /**
-     * For each transaction, try to add the reference to a Set. Any reference that could not be added indicates that the
-     * corresponding transaction is not unique.
-     * @param transactions
-     * @return return a List of transactions which have non-unique reference codes
+     * For each record, try to add the reference to a Set. Any reference that could not be added indicates that the
+     * corresponding record is not unique.
+     * @param records
+     * @return return a List of records which have non-unique reference codes
      */
     @Override
-    public List<Transaction> validateReferenceCode(List<Transaction> transactions) {
+    public List<Record> validateReferenceCode(List<Record> records) {
         Set<Integer> uniqueRefs = new HashSet<>();
-        Predicate<Transaction> nonUniqueTransaction = transaction -> !uniqueRefs.add(transaction.getReference());
-        return transactions.stream()
-                .filter(nonUniqueTransaction)
+        Predicate<Record> nonUniqueRecord = record -> !uniqueRefs.add(record.getReference());
+        return records.stream()
+                .filter(nonUniqueRecord)
                 .collect(Collectors.toList());
     }
 
     /**
-     * Check each transaction to make sure that the start balance corrected by the mutation is equal to the end balance,
-     * and return any transactions that fail this test.
-     * @param transactions
+     * Check each record to make sure that the start balance corrected by the mutation is equal to the end balance,
+     * and return any record that fail this test.
+     * @param records
      * @return
      */
     @Override
-    public List<Transaction> validateEndBalance(List<Transaction> transactions) {
-        Predicate<Transaction> endBalanceIncorrect = transaction -> !transaction.getStartBalance()
-                .add(transaction.getMutation())
-                .equals(transaction.getEndBalance());
-        return transactions.stream()
+    public List<Record> validateEndBalance(List<Record> records) {
+        Predicate<Record> endBalanceIncorrect = record -> !record.getStartBalance()
+                .add(record.getMutation())
+                .equals(record.getEndBalance());
+        return records.stream()
                 .filter(endBalanceIncorrect)
                 .collect(Collectors.toList());
     }

@@ -1,7 +1,7 @@
 package ng.dominic.parser.web;
 
-import ng.dominic.parser.model.Transaction;
-import ng.dominic.parser.service.TransactionServiceImpl;
+import ng.dominic.parser.model.Record;
+import ng.dominic.parser.service.RecordServiceImpl;
 import ng.dominic.parser.service.ValidationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,10 +15,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-public class TransactionHandler {
+public class RecordHandler {
 
     @Autowired
-    private TransactionServiceImpl transactionService;
+    private RecordServiceImpl recordService;
 
     @Autowired
     private ValidationServiceImpl validationService;
@@ -26,18 +26,18 @@ public class TransactionHandler {
     // TODO: 12/10/2019 sanity check, remove when up and running
     @RequestMapping("/hello")
     public String hello() throws Exception {
-        return "hello , it is " + LocalDateTime.now();
+        return "hallo, het is " + LocalDateTime.now();
     }
 
     @PostMapping("/csv")
     public String handleCsv(@RequestParam("file") MultipartFile multipartFile) throws Exception {
-        File file = transactionService.convertToFile(multipartFile);
-        List<Transaction> importedTransactions = transactionService.parseFile(file);
-        List<Transaction> rejectedTransactions = validationService.validateAll(importedTransactions);
-        return validationService.isValidated(rejectedTransactions)
-                ? "All transactions ok"
-                : validationService.reportValidationFailures(rejectedTransactions);
+        File file = recordService.convertToFile(multipartFile);
+        List<Record> importedRecords = recordService.parseFile(file);
+        List<Record> rejectedRecords = validationService.validateAll(importedRecords);
+        return validationService.isValidated(rejectedRecords)
+                ? "All records ok"
+                : validationService.reportValidationFailures(rejectedRecords);
     }
 
-//    @PostMapping("/txt")
+//    @PostMapping("/xml")
 }
