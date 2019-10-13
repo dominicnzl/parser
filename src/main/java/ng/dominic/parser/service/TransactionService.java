@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface TransactionService {
 
-    public File convertMultipartFile(MultipartFile multipartFile) throws IOException;
+    public File convertToFile(MultipartFile multipartFile) throws IOException;
 
     public List<Transaction> parseFile(File file) throws Exception;
 

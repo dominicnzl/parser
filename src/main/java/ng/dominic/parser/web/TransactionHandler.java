@@ -2,6 +2,7 @@ package ng.dominic.parser.web;
 
 import ng.dominic.parser.model.Transaction;
 import ng.dominic.parser.service.TransactionServiceImpl;
+import ng.dominic.parser.service.ValidationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,16 +20,23 @@ public class TransactionHandler {
     @Autowired
     private TransactionServiceImpl transactionService;
 
+    @Autowired
+    private ValidationServiceImpl validationService;
+
     // TODO: 12/10/2019 sanity check, remove when up and running
     @RequestMapping("/hello")
-    public String helloWorld() throws Exception {
-        return "hello world, it is " + LocalDateTime.now();
+    public String hello() throws Exception {
+        return "hello , it is " + LocalDateTime.now();
     }
 
     @PostMapping("/csv")
-    public List<Transaction> handleCsv(@RequestParam("file") MultipartFile multipartFile) throws Exception {
-        File file = transactionService.convertMultipartFile(multipartFile);
-        return transactionService.parseFile(file);
+    public String handleCsv(@RequestParam("file") MultipartFile multipartFile) throws Exception {
+        File file = transactionService.convertToFile(multipartFile);
+        List<Transaction> importedTransactions = transactionService.parseFile(file);
+        List<Transaction> rejectedTransactions = validationService.validateAll(importedTransactions);
+        return validationService.isValidated(rejectedTransactions)
+                ? "All transactions ok"
+                : validationService.reportValidationFailures(rejectedTransactions);
     }
 
 //    @PostMapping("/txt")

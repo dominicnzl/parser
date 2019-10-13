@@ -19,12 +19,12 @@ public class TransactionServiceImpl implements TransactionService {
 
     // Takes an uploaded file that Spring expects and converts it a java.io.File
     @Override
-    public File convertMultipartFile(MultipartFile multipartFile) throws IOException {
+    public File convertToFile(MultipartFile multipartFile) throws IOException {
         File file = Optional.ofNullable(multipartFile)
                 .map(MultipartFile::getOriginalFilename)
                 .map(File::new)
                 .orElseThrow(() -> new IOException("Uploaded file has no name"));
-        if(file.createNewFile()) {
+        if(file.createNewFile() && null != multipartFile) {
             FileOutputStream outputStream = new FileOutputStream(file);
             outputStream.write(multipartFile.getBytes());
         }
@@ -44,21 +44,13 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public Transaction createTransactionDTO(String[] elements) {
-        int ref = Integer.parseInt(elements[0]);
-        String acc = elements[1];
-        String desc = elements[2];
-        BigDecimal start = new BigDecimal(elements[3]);
-        BigDecimal mut = new BigDecimal(elements[4]);
-        BigDecimal end = new BigDecimal(elements[5]);
+    public Transaction createTransactionDTO(String[] columns) {
+        int ref = Integer.parseInt(columns[0]);
+        String acc = columns[1];
+        String desc = columns[2];
+        BigDecimal start = new BigDecimal(columns[3]);
+        BigDecimal mut = new BigDecimal(columns[4]);
+        BigDecimal end = new BigDecimal(columns[5]);
         return new Transaction(ref, acc, desc, start, mut, end);
     }
-
-
-    // mock file
-//    public File file = new File(Objects.requireNonNull(
-//            getClass().getClassLoader().getResource("records.csv")).getFile());
-
-    // mock inputstream
-//    InputStream inputStream = getClass().getClassLoader().getResourceAsStream("records.csv");
 }

@@ -12,7 +12,7 @@
 	<artifactId>parser</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>parser</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Parser for csv and xml, personal project</description>
 
 	<properties>
 		<java.version>11</java.version>
@@ -31,10 +31,15 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web-services</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.9</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
