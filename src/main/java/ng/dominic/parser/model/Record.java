@@ -1,15 +1,35 @@
 package ng.dominic.parser.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import java.math.BigDecimal;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Record {
 
+    @XmlAttribute(name = "reference")
     private int reference;
+
+    @XmlElement(name = "accountNumber")
     private String accountNumber;
+
+    @XmlElement(name = "description")
     private String description;
+
+    @XmlElement(name = "startBalance")
     private BigDecimal startBalance;
+
+    @XmlElement(name = "mutation")
     private BigDecimal mutation;
+
+    @XmlElement(name = "endBalance")
     private BigDecimal endBalance;
+
+    // This no-arg constructor required for JAXB
+    private Record() {
+    }
 
     public Record(int reference, String accountNumber, String description, BigDecimal startBalance,
                   BigDecimal mutation, BigDecimal endBalance) {

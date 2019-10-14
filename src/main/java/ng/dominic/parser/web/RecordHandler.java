@@ -1,7 +1,9 @@
 package ng.dominic.parser.web;
 
 import ng.dominic.parser.model.Record;
-import ng.dominic.parser.service.RecordServiceImpl;
+import ng.dominic.parser.service.FileServiceImpl;
+import ng.dominic.parser.service.RecordServiceCsvImpl;
+import ng.dominic.parser.service.RecordServiceXmlImpl;
 import ng.dominic.parser.service.ValidationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +20,13 @@ import java.util.List;
 public class RecordHandler {
 
     @Autowired
-    private RecordServiceImpl recordService;
+    private FileServiceImpl fileService;
+
+    @Autowired
+    private RecordServiceCsvImpl recordService;
+
+    @Autowired
+    private RecordServiceXmlImpl recordServiceXml;
 
     @Autowired
     private ValidationServiceImpl validationService;
@@ -31,7 +39,7 @@ public class RecordHandler {
 
     @PostMapping("/csv")
     public String handleCsv(@RequestParam("file") MultipartFile multipartFile) throws Exception {
-        File file = recordService.convertToFile(multipartFile);
+        File file = fileService.convertToFile(multipartFile);
         List<Record> importedRecords = recordService.parseFile(file);
         List<Record> rejectedRecords = validationService.validateAll(importedRecords);
         return validationService.isValidated(rejectedRecords)
@@ -39,5 +47,10 @@ public class RecordHandler {
                 : validationService.reportValidationFailures(rejectedRecords);
     }
 
-//    @PostMapping("/xml")
+    @PostMapping("/xml")
+    public List<Record> handleXml(@RequestParam("file") MultipartFile multipartFile) throws Exception {
+        File file = fileService.convertToFile(multipartFile);
+        List<Record> importedRecords = recordServiceXml.parseFile(file);
+        return importedRecords;
+    }
 }
