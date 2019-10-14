@@ -7,6 +7,6 @@ import java.io.IOException;
 
 public interface FileService {
 
-    // Takes an uploaded file that Spring expects and converts it a java.io.File
+    // Takes an uploaded file that Spring expects and converts it to a java.io.File
     public File convertToFile(MultipartFile multipartFile) throws IOException;
 }

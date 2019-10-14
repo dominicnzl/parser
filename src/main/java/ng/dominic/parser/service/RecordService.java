@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface RecordService {
 
+    // Takes a file and returns a list of records
     public List<Record> parseFile(File file) throws Exception;
 
 }
