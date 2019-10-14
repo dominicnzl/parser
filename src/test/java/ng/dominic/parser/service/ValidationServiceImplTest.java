@@ -1,7 +1,9 @@
 package ng.dominic.parser.service;
 
 import ng.dominic.parser.RecordTestData;
+import ng.dominic.parser.model.FailureReason;
 import ng.dominic.parser.model.Record;
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +23,13 @@ public class ValidationServiceImplTest {
 
     @Test
     public void validateReferenceCodeTestNotEmpty() {
-        List<Record> test = validationService.validateReferenceCode(RecordTestData.referenceCodeDuplicated());
+        List<Pair<Record, FailureReason>> test = validationService.validateReferenceCode(RecordTestData.referenceCodeDuplicated());
         Assert.notEmpty(test, "The test should not be empty because it has a duplicate ref code");
     }
 
     @Test
     public void validateReferenceCodeTestExactlyOne() {
-        List<Record> test = validationService.validateReferenceCode(RecordTestData.referenceCodeDuplicated());
+        List<Pair<Record, FailureReason>>  test = validationService.validateReferenceCode(RecordTestData.referenceCodeDuplicated());
         Assert.isTrue(test.size() == 1, "There is one duplicate record");
     }
 
@@ -35,7 +37,7 @@ public class ValidationServiceImplTest {
     public void validateEndBalanceHappyFlow() {
         List<Record> records = new ArrayList<>();
         records.add(RecordTestData.withCorrectEndBalance());
-        List<Record> test = validationService.validateEndBalance(records);
+        List<Pair<Record, FailureReason>>  test = validationService.validateEndBalance(records);
         Assert.isTrue(test.isEmpty(), "The test should be empty because the endbalance is correct");
     }
 
@@ -43,7 +45,7 @@ public class ValidationServiceImplTest {
     public void validateEndBalanceExpectFail() {
         List<Record> records = new ArrayList<>();
         records.add(RecordTestData.withIncorrectEndBalance());
-        List<Record> test = validationService.validateEndBalance(records);
+        List<Pair<Record, FailureReason>>  test = validationService.validateEndBalance(records);
         Assert.notEmpty(test, "The test should not be empty because the endbalance is incorrect");
     }
 }

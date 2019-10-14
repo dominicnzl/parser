@@ -1,6 +1,9 @@
 package ng.dominic.parser.service;
 
+import ng.dominic.parser.model.FailureReason;
 import ng.dominic.parser.model.Record;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,23 +17,25 @@ import java.util.stream.Collectors;
 public class ValidationServiceImpl implements ValidationService {
 
     @Override
-    public boolean isValidated(List<Record> rejectedRecords) {
+    public boolean isValidated(List<Pair<Record, FailureReason>> rejectedRecords) {
         return rejectedRecords.isEmpty();
     }
 
     @Override
-    public String reportValidationFailures(List<Record> records) {
+    public String reportValidationFailures(List<Pair<Record, FailureReason>> records) {
         return records.stream()
-                .map(record -> "Failed record with reference: "
-                        + record.getReference()
+                .map(record -> "Record failed with reason: "
+                        + record.getRight()
+                        + "\n\t with reference: "
+                        + record.getLeft().getReference()
                         + " and description: "
-                        + record.getDescription())
-                .collect(Collectors.joining("\n"));
+                        + record.getLeft().getDescription())
+                .collect(Collectors.joining("\n\n"));
     }
 
     @Override
     public String  validateAll(List<Record> records) {
-        List<Record> rejectedRecords = new ArrayList<>();
+        List<Pair<Record, FailureReason>> rejectedRecords = new ArrayList<>();
         rejectedRecords.addAll(validateReferenceCode(records));
         rejectedRecords.addAll(validateEndBalance(records));
         return isValidated(rejectedRecords)
@@ -45,11 +50,12 @@ public class ValidationServiceImpl implements ValidationService {
      * @return return a List of records which have non-unique reference codes
      */
     @Override
-    public List<Record> validateReferenceCode(List<Record> records) {
+    public List<Pair<Record, FailureReason>> validateReferenceCode(List<Record> records) {
         Set<Integer> uniqueRefs = new HashSet<>();
         Predicate<Record> nonUniqueRecord = record -> !uniqueRefs.add(record.getReference());
         return records.stream()
                 .filter(nonUniqueRecord)
+                .map(record -> new ImmutablePair<>(record, FailureReason.DUPLICATE_REFERENCE_CODE))
                 .collect(Collectors.toList());
     }
 
@@ -60,12 +66,13 @@ public class ValidationServiceImpl implements ValidationService {
      * @return
      */
     @Override
-    public List<Record> validateEndBalance(List<Record> records) {
+    public List<Pair<Record, FailureReason>> validateEndBalance(List<Record> records) {
         Predicate<Record> endBalanceIncorrect = record -> !record.getStartBalance()
                 .add(record.getMutation())
                 .equals(record.getEndBalance());
         return records.stream()
                 .filter(endBalanceIncorrect)
+                .map(record -> new ImmutablePair<>(record, FailureReason.END_BALANCE_INCORRECT))
                 .collect(Collectors.toList());
     }
 }
