@@ -23,7 +23,7 @@ public class RecordHandler {
     private FileServiceImpl fileService;
 
     @Autowired
-    private RecordServiceCsvImpl recordService;
+    private RecordServiceCsvImpl recordServiceCsv;
 
     @Autowired
     private RecordServiceXmlImpl recordServiceXml;
@@ -40,17 +40,14 @@ public class RecordHandler {
     @PostMapping("/csv")
     public String handleCsv(@RequestParam("file") MultipartFile multipartFile) throws Exception {
         File file = fileService.convertToFile(multipartFile);
-        List<Record> importedRecords = recordService.parseFile(file);
-        List<Record> rejectedRecords = validationService.validateAll(importedRecords);
-        return validationService.isValidated(rejectedRecords)
-                ? "All records ok"
-                : validationService.reportValidationFailures(rejectedRecords);
+        List<Record> importedRecords = recordServiceCsv.parseFile(file);
+        return validationService.validateAll(importedRecords);
     }
 
     @PostMapping("/xml")
-    public List<Record> handleXml(@RequestParam("file") MultipartFile multipartFile) throws Exception {
+    public String handleXml(@RequestParam("file") MultipartFile multipartFile) throws Exception {
         File file = fileService.convertToFile(multipartFile);
         List<Record> importedRecords = recordServiceXml.parseFile(file);
-        return importedRecords;
+        return validationService.validateAll(importedRecords);
     }
 }

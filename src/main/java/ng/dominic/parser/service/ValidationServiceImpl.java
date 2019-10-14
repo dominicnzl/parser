@@ -29,11 +29,13 @@ public class ValidationServiceImpl implements ValidationService {
     }
 
     @Override
-    public List<Record> validateAll(List<Record> records) {
+    public String  validateAll(List<Record> records) {
         List<Record> rejectedRecords = new ArrayList<>();
         rejectedRecords.addAll(validateReferenceCode(records));
         rejectedRecords.addAll(validateEndBalance(records));
-        return rejectedRecords;
+        return isValidated(rejectedRecords)
+                ? "All records ok"
+                : reportValidationFailures(rejectedRecords);
     }
 
     /**

@@ -12,8 +12,8 @@ public interface ValidationService {
     // Receives a list of records and returns a message with the reference and description of the records.
     public String reportValidationFailures(List<Record> records);
 
-    // Runs all specific validations and returns a list of rejected records.
-    public List<Record> validateAll(List<Record> records);
+    // Runs all specific validations and returns a message with the result of the validation.
+    public String validateAll(List<Record> records);
 
     // Each reference code should be unique. This method returns a list of non-unique reference codes.
     public List<Record> validateReferenceCode(List<Record> records);
