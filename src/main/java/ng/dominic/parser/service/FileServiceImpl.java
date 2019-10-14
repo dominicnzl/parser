@@ -18,8 +18,9 @@ public class FileServiceImpl implements FileService {
                 .map(File::new)
                 .orElseThrow(() -> new IOException("Uploaded file has no name"));
         if(file.createNewFile() && null != multipartFile) {
-            FileOutputStream outputStream = new FileOutputStream(file);
-            outputStream.write(multipartFile.getBytes());
+            try(FileOutputStream outputStream = new FileOutputStream(file)) {
+                outputStream.write(multipartFile.getBytes());
+            };
         }
         return file;
     }
