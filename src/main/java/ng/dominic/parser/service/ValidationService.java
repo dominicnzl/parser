@@ -11,7 +11,7 @@ public interface ValidationService {
     // Receives a list of rejected records, and returns true if empty.
     public boolean isValidated(List<Pair<Record, FailureReason>> records);
 
-    // Receives a list of records and returns a message with the failure reason, reference and description of the records.
+    // Receives a list of records and returns a message with their failure reason, reference and description.
     public String reportValidationFailures(List<Pair<Record, FailureReason>> records);
 
     // Runs all specific validations and returns a message with the result of the validation.

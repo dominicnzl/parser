@@ -34,7 +34,7 @@ public class ValidationServiceImpl implements ValidationService {
     }
 
     @Override
-    public String  validateAll(List<Record> records) {
+    public String validateAll(List<Record> records) {
         List<Pair<Record, FailureReason>> rejectedRecords = new ArrayList<>();
         rejectedRecords.addAll(validateReferenceCode(records));
         rejectedRecords.addAll(validateEndBalance(records));
@@ -47,7 +47,7 @@ public class ValidationServiceImpl implements ValidationService {
      * For each record, try to add the reference to a Set. Any reference that could not be added indicates that the
      * corresponding record is not unique.
      * @param records
-     * @return return a List of records which have non-unique reference codes
+     * @return a List of records which have non-unique reference codes and the corresponding failure reason
      */
     @Override
     public List<Pair<Record, FailureReason>> validateReferenceCode(List<Record> records) {
@@ -63,7 +63,7 @@ public class ValidationServiceImpl implements ValidationService {
      * Check each record to make sure that the start balance corrected by the mutation is equal to the end balance,
      * and return any record that fail this test.
      * @param records
-     * @return
+     * @return a list of records for which the end balance is incorrect, and the corresponding failure reason
      */
     @Override
     public List<Pair<Record, FailureReason>> validateEndBalance(List<Record> records) {
