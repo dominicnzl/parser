@@ -31,12 +31,6 @@ public class RecordHandler {
     @Autowired
     private ValidationServiceImpl validationService;
 
-    // TODO: 12/10/2019 sanity check, remove when up and running
-    @RequestMapping("/hello")
-    public String hello() throws Exception {
-        return "hallo, het is " + LocalDateTime.now();
-    }
-
     @PostMapping("/csv")
     public String handleCsv(@RequestParam("file") MultipartFile multipartFile) throws Exception {
         File file = fileService.convertToFile(multipartFile);
