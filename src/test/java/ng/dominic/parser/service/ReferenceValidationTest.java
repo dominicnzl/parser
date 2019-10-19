@@ -16,6 +16,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.runners.Parameterized.Parameter;
 import static org.junit.runners.Parameterized.Parameters;
 
+/**
+ * For a list of three records, test if validationReferenceCode returns the expected number of duplicate references.
+ */
 @RunWith(Parameterized.class)
 @SpringBootTest
 public class ReferenceValidationTest {
