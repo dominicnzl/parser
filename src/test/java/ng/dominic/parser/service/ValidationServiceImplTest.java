@@ -27,9 +27,9 @@ public class ValidationServiceImplTest {
                 123456,
                 "NL12RABO34567890",
                 "Test Description",
-                new BigDecimal(10.00),
-                new BigDecimal(5.00),
-                new BigDecimal(15.00));
+                new BigDecimal("10.00"),
+                new BigDecimal("5.00"),
+                new BigDecimal("15.00"));
         testFailedRecords.add(new ImmutablePair<>(record, FailureReason.DUPLICATE_REFERENCE_CODE));
     }
 
