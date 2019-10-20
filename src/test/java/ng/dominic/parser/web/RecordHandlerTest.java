@@ -42,7 +42,6 @@ public class RecordHandlerTest {
             "text/csv",
             "test".getBytes());
 
-
     private MockMultipartFile xmlFile = new MockMultipartFile(
             "file",
             "records.xml",

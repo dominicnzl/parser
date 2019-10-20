@@ -42,6 +42,7 @@ public class RecordServiceCsvImplTest {
                         new BigDecimal("-13.33"),
                         new BigDecimal("20.00")));
         List<Record> testRecords = recordServiceCsv.parseFile(recordsFile);
+
         assertThat(testRecords, hasSize(2));
         assertThat(testRecords.get(0).getReference(), is(equalTo(expectedRecords.get(0).getReference())));
         assertThat(testRecords.get(0).getDescription(), is(equalTo(expectedRecords.get(0).getDescription())));

@@ -45,6 +45,7 @@ public class RecordServiceXmlImplTest {
                         new BigDecimal("25"),
                         new BigDecimal("75")));
         List<Record> testRecords = recordServiceXml.parseFile(recordsFile);
+
         assertThat(testRecords, hasSize(2));
         assertThat(testRecords.get(0).getReference(), is(equalTo(expectedRecords.get(0).getReference())));
         assertThat(testRecords.get(0).getDescription(), is(equalTo(expectedRecords.get(0).getDescription())));
