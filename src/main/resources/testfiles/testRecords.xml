@@ -1,0 +1,16 @@
+<records>
+    <record reference="333333">
+        <accountNumber>NL33RABO3333333333</accountNumber>
+        <description>testdescription 3</description>
+        <startBalance>-99.99</startBalance>
+        <mutation>-0.01</mutation>
+        <endBalance>-100.00</endBalance>
+    </record>
+    <record reference="444444">
+        <accountNumber>NL44RABO4444444444</accountNumber>
+        <description>testdescription 4</description>
+        <startBalance>50</startBalance>
+        <mutation>25</mutation>
+        <endBalance>75</endBalance>
+    </record>
+</records>

@@ -12,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -78,7 +77,7 @@ public class EndBalanceValidationTest {
 
     @Test
     public void validateEndBalanceTest() {
-        List<Record> testRecords = Collections.singletonList(
+        List<Record> testRecords = List.of(
                 testEndBalanceRecord(startBalance, mutation, endBalance)
         );
         assertEquals(expectValidationSuccess, validationService.validateEndBalance(testRecords).isEmpty());
